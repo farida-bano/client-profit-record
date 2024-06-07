@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profit Record</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('meee.jpeg'); /* Replace with your background image URL */
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(244, 108, 219, 0.961);
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .logo {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .logo img {
+            width: 150px; /* Adjust the size of your logo */
+        }
+        nav {
+            background-color: #f72fb8;
+            color: white;
+            padding: 10px 20px;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+        }
+        nav ul li {
+            position: relative;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            display: block;
+        }
+        nav ul li ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #444;
+            padding: 0;
+        }
+        nav ul li ul li {
+            width: 200px;
+        }
+        nav ul li:hover ul {
+            display: block;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin: 10px 0 5px;
+        }
+        input, select {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .submit-button {
+            background-color: #995e06;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .submit-button:hover {
+            background-color: #f5bb28;
+        }
+        .record {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+        .animated {
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .login-container, .logout-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .login-container input, .logout-container button {
+            margin: 5px;
+        }
+        .register-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .register-container input {
+            margin: 5px;
+        }
+        footer {
+            background-color: #e9884c;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="logoo.png" alt="Logo"> <!-- Replace with your logo URL -->
+    </div>
+    <nav>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li>
+                <a href="#">Options</a>
+                <ul>
+                    <li><a href="#">View Records</a></li>
+                    <li><a href="#">Add Record</a></li>
+                </ul>
+            </li>
+            <li><a href="#" onclick="toggleLogin()">Login</a></li>
+            <li><a href="#" onclick="toggleRegister()">Register</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Client Profit Record</h1>
+        <form id="clientForm">
+            <label for="ssc">SSC Card Number:</label>
+            <input type="text" id="ssc" name="ssc" required>
+            
+            <label for="registerNumber">Register Number:</label>
+            <input type="text" id="registerNumber" name="registerNumber" required>
+            
+            <label for="issueDate">Issue Date:</label>
+            <input type="date" id="issueDate" name="issueDate" required>
+            
+            <label for="withdrawalDate">Withdrawal Date:</label>
+            <input type="date" id="withdrawalDate" name="withdrawalDate" required>
+            
+            <label for="profitAmount">Profit Amount:</label>
+            <input type="number" id="profitAmount" name="profitAmount" required>
+            
+            <label for="clientName">Client Name:</label>
+            <input type="text" id="clientName" name="clientName" required>
+            
+            <label for="mobileNumber">Mobile Number:</label>
+            <input type="text" id="mobileNumber" name="mobileNumber" required>
+            
+            <label for="nic">NIC:</label>
+            <input type="text" id="nic" name="nic" required>
+            
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required>
+            
+            <button type="button" class="submit-button" onclick="submitForm()">Submit</button>
+        </form>
+        <div id="recordsContainer"></div>
+    </div>
+    
+    <div class="login-container" id="loginContainer">
+        <h2>Login</h2>
+        <input type="text" id="loginUsername" placeholder="Username">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+    
+    <div class="register-container" id="registerContainer">
+        <h2>Register</h2>
+        <input type="text" id="registerUsername" placeholder="Username">
+        <input type="password" id="registerPassword" placeholder="Password">
+        <button onclick="register()">Register</button>
+    </div>
+    
+    <div class="logout-container" id="logoutContainer" style="display: none;">
+        <button onclick="logout()">Logout</button>
+    </div>
+    <div class="login-container" id="loginContainer">
+        <h2>Login</h2>
+        <input type="text" id="loginUsername" placeholder="Username">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button onclick="login()">Login</button>
+    </div>
+    
+    <div class="register-container" id="registerContainer">
+        <h2>Register</h2>
+        <input type="text" id="registerUsername" placeholder="Username">
+        <input type="password" id="registerPassword" placeholder="Password">
+        <button onclick="register()">Register</button>
+    </div>
+    
+
+    <footer>
+        &copy; 2024 Your Company. All rights reserved.
+    </footer>
+
+    <script>
+        function submitForm() {
+            const form = document.getElementById('clientForm');
+            const recordsContainer = document.getElementById('recordsContainer');
+
+            const record = {
+                ssc: form.ssc.value,
+                registerNumber: form.registerNumber.value,
+                issueDate: form.issueDate.value,
+                withdrawalDate: form.withdrawalDate.value,
+                profitAmount: form.profitAmount.value,
+                clientName: form.clientName.value,
+                mobileNumber: form.mobileNumber.value,
+                nic: form.nic.value,
+                address: form.address.value
+            };
+
+            const recordElement = document.createElement('div');
+            recordElement.classList.add('record', 'animated');
+            recordElement.innerHTML = `
+                <p><strong>SSC Card Number:</strong> ${record.ssc}</p>
+                <p><strong>Register Number:</strong> ${record.registerNumber}</p>
+                <p><strong>Issue Date:</strong> ${record.issueDate}</p>
+                <p><strong>Withdrawal Date:</strong> ${record.withdrawalDate}</p>
+                <p><strong>Profit Amount:</strong> ${record.profitAmount}</p>
+                <p><strong>Client Name:</strong> ${record.clientName}</p>
+                <p><strong>Mobile Number:</strong> ${record.mobileNumber}</p>
+                <p><strong>NIC:</strong> ${record.nic}</p>
+                <p><strong>Address:</strong> ${record.address}</p>
+            `;
+            recordsContainer.appendChild(recordElement);
+
+            form.reset();
+        }
+
+        function toggleLogin() {
+            document.getElementById('loginContainer').style.display = 'block';
+            document.getElementById('registerContainer').style.display = 'none';
+        }
+
+        function toggleRegister() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('registerContainer').style.display = 'block';
+        }
+
+        function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            // Placeholder for backend login logic
+            alert('Logged in as ' + username);
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('logoutContainer').style.display = 'block';
+        }
+
+        function register() {
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            // Placeholder for backend registration logic
+            alert('Registered as ' + username);
+            document.getElementById('registerContainer').style.display = 'none';
+            document.getElementById('loginContainer').style.display = 'block';
+        }
+
+        function logout() {
+            alert('Logged out');
+            document.getElementById('logoutContainer').style.display = 'none';
+            document.getElementById('loginContainer').style.display = 'block';
+        }
+        function login() {
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+    
+    // Here, you can check the credentials against some predefined values or stored values.
+    // For simplicity, let's use local storage.
+    const storedUsername = localStorage.getItem('username');
+    const storedPassword = localStorage.getItem('password');
+    
+    if (username === storedUsername && password === storedPassword) {
+        alert('Login successful as ' + username);
+        document.getElementById('loginContainer').style.display = 'none';
+        document.getElementById('logoutContainer').style.display = 'block';
+    } else {
+        alert('Invalid username or password');
+    }
+}
+
+function register() {
+    const username = document.getElementById('registerUsername').value;
+    const password = document.getElementById('registerPassword').value;
+    
+    // Store the username and password in local storage.
+    localStorage.setItem('username', username);
+    localStorage.setItem('password', password);
+    
+    alert('Registered as ' + username);
+    document.getElementById('registerContainer').style.display = 'none';
+    document.getElementById('loginContainer').style.display = 'block';
+}
+
+function logout() {
+    alert('Logged out');
+    document.getElementById('logoutContainer').style.display = 'none';
+    document.getElementById('loginContainer').style.display = 'block';
+}
+
+    </script>
+</body>
+</html>
+
+
